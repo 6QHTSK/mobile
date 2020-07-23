@@ -1,0 +1,216 @@
+<div>
+    <p></p>
+    <!--谱面输入部分-->
+    <div>
+        <mu-container>
+            <mu-flex>
+                <mu-flex span="8">
+                    <mu-select v-model="diffid" placeholder="请选择准度" :disabled="loading || showdetail" style="width:95%">
+                        <mu-option :key="0" :value="0" label="Easy"></mu-option>
+                        <mu-option :key="1" :value="1" label="Normal"></mu-option>
+                        <mu-option :key="2" :value="2" label="Hard"></mu-option>
+                        <mu-option :key="3" :value="3" label="Expert"></mu-option>
+                        <mu-option :key="4" :value="4" label="Special"></mu-option>
+                    </mu-select>
+                </mu-flex>
+                <mu-flex span="16">
+                    <mu-text-field v-model="bestdoriid" placeholder="Bestdori谱面id" @input="inputchange($event)"
+                        style="width:95%" :disabled="showdetail && !loading">
+                    </mu-text-field>
+                </mu-flex>
+            </mu-flex>
+            <mu-button color="primary" v-show="showdetail && !loading" @click="clearinput" full-width>重置
+            </mu-button>
+            <mu-button color="primary" v-show="!showdetail && !loading" @click="getbestdorichart" full-width>分析
+            </mu-button>
+            <mu-button color="primary" v-show="!showdetail && loading" full-width>计算中
+            </mu-button>
+        </mu-container>
+    </div>
+    <p> </p>
+    <!--谱面解析部分-->
+    <div v-show="showdetail">
+        <!--通用解析-->
+        <div>
+            <mu-flex>
+                <mu-flex justify-content="end" fill>
+                    <mu-chip color="secondary">
+                        <span v-if="totaltimesec < 10.0"
+                            style="font-size:medium;">Time:{{totaltimemin}}'0{{totaltimesec}}</span>
+                        <span v-else style="font-size:medium;">Time:{{totaltimemin}}'{{totaltimesec}}</span>
+                    </mu-chip>
+                    <span> </span>
+                </mu-flex>
+                <mu-flex justify-content="start" fill style="margin-left: 8px;">
+                    <mu-chip color="success">
+                        <span v-if="bpmlow == bpmhigh" style="font-size:medium;">BPM:{{bpmlow}}</span>
+                        <span v-else style="font-size:medium;">BPM:{{bpmlow}}~{{bpmhigh}}</span>
+                    </mu-chip>
+                </mu-flex>
+            </mu-flex>
+            <p> </p>
+            <mu-flex>
+                <mu-flex justify-content="end" fill>
+                    <mu-chip color="primary">
+                        <span style="font-size:medium;">
+                            Notes:{{totalnote}}
+                        </span>
+                    </mu-chip>
+                    <span> </span>
+                </mu-flex>
+                <mu-flex justify-content="start" fill style="margin-left: 8px;">
+                    <mu-chip color="warning">
+                        <span style="font-size:medium;">
+                            Hits:{{totalhitnote}}
+                        </span>
+                    </mu-chip>
+                </mu-flex>
+            </mu-flex>
+            <p> </p>
+        </div>
+        <mu-divider></mu-divider>
+        <!--单手解析-->
+        <mu-list>
+            <mu-list-item v-if="leftpercent!=null">
+                <mu-flex justify-content="start" fill>
+                    <span style="margin-left:8px;font-size:small;">压力分配</span>
+                </mu-flex>
+                <mu-flex justify-content="end" fill>
+                    <mu-chip :color="returncolor(calcpercentage2(leftpercent))">
+                        <span style="font-size: small;margin-right: 2px;">L: </span>
+                        <span style="font-size: small;">{{leftpercent}}% </span>
+                    </mu-chip>
+                    <mu-chip :color="returncolor(calcpercentage2(leftpercent))">
+                        <span style="font-size: small;margin-right: 2px;">R: </span>
+                        <span style="font-size: small;">{{100-leftpercent}}%</span>
+                    </mu-chip>
+                </mu-flex>
+            </mu-list-item>
+
+            <mu-list-item v-if="npsdiff!=null">
+                <mu-flex justify-content="start" fill>
+                    <span style="margin-left:8px;font-size:small;">
+                        NPS
+                    </span>
+                </mu-flex>
+                <mu-flex justify-content="end" fill></mu-flex>
+                <mu-chip :color="returncolor(calcpercentage(npsdiff))">
+                    <span style="font-size: small;">{{totalnps}}</span>
+                </mu-chip>
+                <mu-chip :color="returncolor(calcpercentage(npsdiff))">
+                    <span style="font-size: small;"> LV: </span>
+                    <span style="font-size: small;">{{npsdiff}}</span>
+                </mu-chip>
+                </mu-flex>
+            </mu-list-item>
+
+            <mu-list-item v-if="hpsdiff!=null">
+                <mu-flex justify-content="start" fill>
+                    <span style="margin-left:8px;font-size:small;">
+                        HPS
+                    </span>
+                </mu-flex>
+                <mu-flex justify-content="end" fill></mu-flex>
+                <mu-chip :color="returncolor(calcpercentage(hpsdiff))">
+                    <span style="font-size: small;">{{totalhps}}</span>
+                </mu-chip>
+                <mu-chip :color="returncolor(calcpercentage(hpsdiff))">
+                    <span style="font-size: small;"> LV: </span>
+                    <span style="font-size: small;">{{hpsdiff}}</span>
+                </mu-chip>
+                </mu-flex>
+            </mu-list-item>
+
+            <mu-list-item v-if="maxhpsdiff!=null">
+                <mu-flex justify-content="start" fill>
+                    <span style="margin-left:8px;font-size:small;">
+                        单手maxHPS
+                    </span>
+                </mu-flex>
+                <mu-flex justify-content="end" fill>
+                    <mu-chip :color="returncolor(calcpercentage(maxhpsdiff))">
+                        <span style="font-size: small;">{{maxhps}}</span>
+                    </mu-chip>
+                    <mu-chip :color="returncolor(calcpercentage(maxhpsdiff))">
+                        <span style="font-size: small;"> LV: </span>
+                        <span style="font-size: small;">{{maxhpsdiff}}</span>
+                    </mu-chip>
+                </mu-flex>
+            </mu-list-item>
+
+            <mu-list-item v-if="maxspddiff!=null">
+                <mu-flex justify-content="start" fill>
+                    <span style="margin-left:8px;font-size:small;">
+                        max位移速度
+                    </span>
+                </mu-flex>
+                <mu-flex justify-content="end" fill>
+                    <mu-chip :color="returncolor(calcpercentage(maxspddiff))">
+                        <span style="font-size: small;">{{maxspd}}</span>
+                    </mu-chip>
+                    <mu-chip :color="returncolor(calcpercentage(maxspddiff))">
+                        <span style="font-size: small;"> LV: </span>
+                        <span style="font-size: small;">{{maxspddiff}}</span>
+                    </mu-chip>
+                </mu-flex>
+            </mu-list-item>
+
+            <mu-list-item v-if="maxfpsfrontdiff!=null">
+                <mu-flex justify-content="start" fill>
+                    <span style="margin-left:8px;font-size:small;">
+                        Hit-粉
+                    </span>
+                </mu-flex>
+                <mu-flex justify-content="end" fill>
+                    <mu-chip :color="returncolor(calcpercentage(maxfpsfrontdiff))">
+                        <span style="font-size: small;">{{maxfpsfront}}</span>
+                    </mu-chip>
+                    <mu-chip :color="returncolor(calcpercentage(maxfpsfrontdiff))">
+                        <span style="font-size: small;"> LV: </span>
+                        <span style="font-size: small;">{{maxfpsfrontdiff}}</span>
+                    </mu-chip>
+                </mu-flex>
+            </mu-list-item>
+
+            <mu-list-item v-if="maxfpsbackdiff!=null">
+                <mu-flex justify-content="start" fill>
+                    <span style="margin-left:8px;font-size:small;">
+                        粉-Hit
+                    </span>
+                </mu-flex>
+                <mu-flex justify-content="end" fill>
+                    <mu-chip :color="returncolor(calcpercentage(maxfpsbackdiff))">
+                        <span style="font-size: small;">{{maxfpsback}}</span>
+                    </mu-chip>
+                    <mu-chip :color="returncolor(calcpercentage(maxfpsbackdiff))">
+                        <span style="font-size: small;"> LV: </span>
+                        <span style="font-size: small;">{{maxfpsbackdiff}}</span>
+                    </mu-chip>
+                </mu-flex>
+            </mu-list-item>
+        </mu-list>
+        <p> </p>
+    </div>
+    <!--解释说明-->
+    <div>
+        <mu-expansion-panel>
+            <div slot="header">使用说明</div>
+            <p>Beta 1.1.1 版，运算结果仅供参考，不代表曲目的最真实难度。</p>
+            <p>请选择正确的难度分级，否则将会造成较大的误差</p>
+            <p>量程：Easy: 5~12 Normal: 11~16 Hard: 16~23 Expert: 22~29，超出量程时显示估计值</p>
+            <p>警告：请选择正确的难度分级，否则将会造成较大的误差</p>
+            <p>如在使用过程中出现任何问题，联系作者</p>
+        </mu-expansion-panel>
+        <mu-expansion-panel>
+            <div slot="header">使用方法</div>
+            <p>1. 在右上角的小输入框中输入想要获取的bestdori谱面</p>
+            <p>2. 如选择官谱，选择您的谱面的分级：Easy/Normal/Hard/Expert，默认Expert</p>
+            <p>3. 点击分析按钮，即可得到分析结果</p>
+        </mu-expansion-panel>
+        <mu-expansion-panel>
+            <div slot="header">注意事项</div>
+            <p>Expert难度运算结果可能与真实难度差异较大，谱面难度的精确度一般为±1级</p>
+            <p>建模的时候忽略了锁手和卡手配置影响难度的情况，若出现上述配置一般难度会偏低2~3级（加了分配手的代码也没用）</p>
+        </mu-expansion-panel>
+    </div>
+</div>

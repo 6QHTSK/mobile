@@ -1,0 +1,260 @@
+<div>
+    <mu-container>
+        <mu-expansion-panel>
+            <div slot="header">获赞最多的谱面</div>
+            <mu-data-table :columns="columns[0]" :data='results["likechartdetail"]' :loading="onloading">
+                <template slot="expand" slot-scope="prop">
+                    <div style="padding: 24px;">
+                        <p>Artist: {{prop.row[4]}}</p>
+                        <p> Chart by:
+                            <span v-if="prop.row[2]==null">{{prop.row[1]}}</span>
+                            <span v-else>{{prop.row[2]}}@{{prop.row[1]}}</span>
+                        </p>
+                    </div>
+                </template>
+            </mu-data-table>
+        </mu-expansion-panel>
+        <mu-expansion-panel>
+            <div slot="header">时间最长的谱面</div>
+            <mu-data-table :columns="columns[1]" :data='results["longestchart"]' :loading="onloading">
+                <template slot="expand" slot-scope="prop">
+                    <div style="padding: 24px;">
+                        <p>Artist: {{prop.row[4]}}</p>
+                        <p> Chart by:
+                            <span v-if="prop.row[2]==null">{{prop.row[1]}}</span>
+                            <span v-else>{{prop.row[2]}}@{{prop.row[1]}}</span>
+                        </p>
+                    </div>
+                </template>
+                <template slot-scope="scope">
+                    <td>{{scope.row[0]}}</td>
+                    <td>{{scope.row[3]}}</td>
+                    <td>
+                        <span
+                            v-if="(scope.row[5]-60*Math.floor(scope.row[5]/60)).toFixed(0) >= 10">{{Math.floor(scope.row[5]/60)}}:{{(scope.row[5]-60*Math.floor(scope.row[5]/60)).toFixed(0)}}</span>
+                        <span
+                            v-else>{{Math.floor(scope.row[5]/60)}}:0{{(scope.row[5]-60*Math.floor(scope.row[5]/60)).toFixed(0)}}</span>
+                    </td>
+                </template>
+            </mu-data-table>
+        </mu-expansion-panel>
+        <mu-expansion-panel>
+            <div slot="header">物量最多的谱面</div>
+            <mu-data-table :columns="columns[2]" :data='results["maxnotechart"]' :loading="onloading">
+                <template slot="expand" slot-scope="prop">
+                    <div style="padding: 24px;">
+                        <p>Artist: {{prop.row[4]}}</p>
+                        <p> Chart by:
+                            <span v-if="prop.row[2]==null">{{prop.row[1]}}</span>
+                            <span v-else>{{prop.row[2]}}@{{prop.row[1]}}</span>
+                        </p>
+                    </div>
+                </template>
+            </mu-data-table>
+        </mu-expansion-panel>
+        <mu-expansion-panel>
+            <div slot="header">最发狂的谱面</div>
+            <mu-data-table :columns="columns[3]" :data='results["highestnpschart"]' :loading="onloading">
+                <template slot="expand" slot-scope="prop">
+                    <div style="padding: 24px;">
+                        <p>Artist: {{prop.row[4]}}</p>
+                        <p> Chart by:
+                            <span v-if="prop.row[2]==null">{{prop.row[1]}}</span>
+                            <span v-else>{{prop.row[2]}}@{{prop.row[1]}}</span>
+                        </p>
+                    </div>
+                </template>
+            </mu-data-table>
+        </mu-expansion-panel>
+        <mu-expansion-panel>
+            <div slot="header">发谱最多的谱师</div>
+            <mu-data-table :columns="columns[4]" :data='results["charterdetails"]' :loading="onloading">
+                <template slot-scope="scope">
+                    <td><span v-if="scope.row[1]==null">{{scope.row[0]}}</span>
+                        <span v-else>{{scope.row[1]}}@{{scope.row[0]}}</span></td>
+                    <td>{{scope.row[2]}}</td>
+                </template>
+            </mu-data-table>
+        </mu-expansion-panel>
+        <mu-expansion-panel>
+            <div slot="header">获赞最多的谱师</div>
+            <mu-data-table :columns="columns[5]" :data='results["charterdetails"]' :loading="onloading">
+                <template slot-scope="scope">
+                    <td><span v-if="scope.row[1]==null">{{scope.row[0]}}</span>
+                        <span v-else>{{scope.row[1]}}@{{scope.row[0]}}</span></td>
+                    <td>{{scope.row[2]}}</td>
+                </template>
+            </mu-data-table>
+        </mu-expansion-panel>
+        <mu-expansion-panel>
+            <div slot="header">EX/SP难度最大的谱师</div>
+            <mu-data-table :columns="columns[6]" :data='results["highdiffcharterdetail"]' :loading="onloading">
+                <template slot-scope="scope">
+                    <td><span v-if="scope.row[1]==null">{{scope.row[0]}}</span>
+                        <span v-else>{{scope.row[1]}}@{{scope.row[0]}}</span></td>
+                    <td>{{scope.row[2].toFixed(2)}}</td>
+                </template>
+            </mu-data-table>
+        </mu-expansion-panel>
+        <mu-expansion-panel>
+            <div slot="header">EX/SP难度最小的谱师</div>
+            <mu-data-table :columns="columns[6]" :data='results["lowdiffcharterdetail"]' :loading="onloading">
+                <template slot-scope="scope">
+                    <td><span v-if="scope.row[1]==null">{{scope.row[0]}}</span>
+                        <span v-else>{{scope.row[1]}}@{{scope.row[0]}}</span></td>
+                    <td>{{scope.row[2].toFixed(2)}}</td>
+                </template>
+            </mu-data-table>
+        </mu-expansion-panel>
+        <mu-expansion-panel>
+            <div slot="header">热门单曲</div>
+            <mu-data-table :columns="columns[7]" :data='results["heatedsongdetail"]' :loading="onloading">
+            </mu-data-table>
+        </mu-expansion-panel>
+        <mu-expansion-panel>
+            <div slot="header">热门艺术家</div>
+            <mu-data-table :columns="columns[7]" :data='results["heatedartistdetail"]' :loading="onloading">
+            </mu-data-table>
+        </mu-expansion-panel>
+        <mu-expansion-panel>
+            <div slot="header">查询</div>
+            <mu-auto-complete v-if="!onloading" v-model="searchuser" :data="authorname" label="查询谱师"
+                    @select="handleSelect">  
+            </mu-auto-complete>
+            <div v-if="searchsee">
+                <mu-data-table :columns="columns[8]" :data='[{0:"",1:"",2:"",3:""}]'>
+                    <template slot-scope="scope">
+                        <td><h3>#{{searchres["chartcount"][0]}} / {{searchres["chartcount"][1]}}</h3></td>
+                        <td><h3>#{{searchres["likecount"][0]}} / {{searchres["likecount"][1]}}</h3></td>
+                        <td>
+                            <h3 v-if='searchres["highdiffcount"][0] < searchres["lowdiffcount"][0]'
+                                        style="color:#F56C6C">
+                                        #DESC {{searchres["highdiffcount"][0]}} /
+                                        {{searchres["highdiffcount"][1].toFixed(2)}}</h3>
+                            <h3 v-else style="color:#67C23A">#ASC {{searchres["lowdiffcount"][0]}} /
+                                {{searchres["lowdiffcount"][1].toFixed(2)}}</h3>
+                        </td>
+                    </template>
+                </mu-data-table>
+                <mu-tabs :value.sync="active" full-width inverse color="secondary" text-color="rgba(0, 0, 0, .54)">
+                    <mu-tab>最高赞</mu-tab>
+                    <mu-tab>最长</mu-tab>
+                    <mu-tab>密度</mu-tab>
+                    <mu-tab>物量</mu-tab>
+                </mu-tabs>
+                <mu-data-table v-if = "active === 0" :columns="columns[9]" :data='searchres["likechartcount"]'>
+                    <template slot="expand" slot-scope="prop">
+                        <div style="padding: 24px;">
+                            <p>ID: {{prop.row[1]}}</p>
+                            <p>Artist: {{prop.row[4]}}</p>
+                        </div>
+                    </template>
+                </mu-data-table>
+                <mu-data-table v-if = "active === 1" :columns="columns[10]" :data='searchres["lencount"]'>
+                    <template slot="expand" slot-scope="prop">
+                        <div style="padding: 24px;">
+                            <p>ID: {{prop.row[1]}}</p>
+                            <p>Artist: {{prop.row[4]}}</p>
+                        </div>
+                    </template>
+                    <template slot-scope="scope">
+                        <td>{{scope.row[0]}}</td>
+                        <td>{{scope.row[3]}}</td>
+                        <td>
+                            <span
+                                v-if="(scope.row[5]-60*Math.floor(scope.row[5]/60)).toFixed(0) >= 10">{{Math.floor(scope.row[5]/60)}}:{{(scope.row[5]-60*Math.floor(scope.row[5]/60)).toFixed(0)}}</span>
+                            <span
+                                v-else>{{Math.floor(scope.row[5]/60)}}:0{{(scope.row[5]-60*Math.floor(scope.row[5]/60)).toFixed(0)}}</span>
+                        </td>
+                    </template>
+                    
+                </mu-data-table>
+                <mu-data-table v-if = "active === 2" :columns="columns[11]" :data='searchres["npscount"]'>
+                    <template slot="expand" slot-scope="prop">
+                        <div style="padding: 24px;">
+                            <p>ID: {{prop.row[1]}}</p>
+                            <p>Artist: {{prop.row[4]}}</p>
+                        </div>
+                    </template>
+                </mu-data-table>
+                <mu-data-table v-if = "active === 3" :columns="columns[12]" :data='searchres["notecount"]'>
+                    <template slot="expand" slot-scope="prop">
+                        <div style="padding: 24px;">
+                            <p>ID: {{prop.row[1]}}</p>
+                            <p>Artist: {{prop.row[4]}}</p>
+                        </div>
+                    </template>
+                </mu-data-table>
+            </div>
+        </mu-expansion-panel>
+    </mu-container>
+    <!--el-tabs>
+        <el-tab-pane label="查询">
+            <div style="text-align: center;">
+                <p>在此输入需要查询的谱师，并在出现下拉框中选择,如无查询的谱师可能不满足条件未被网站记录</p>
+                <el-autocomplete v-model="searchuser" :fetch-suggestions="querySearch" placeholder="请输入谱师用户名"
+                    :trigger-on-focus="false" @select="handleSelect" style="width:500px"></el-autocomplete>
+            </div>
+            <el-divider></el-divider>
+            <div v-if="searchsee" v-loading="searchload">
+                <el-divider></el-divider>
+                <el-row>
+                    <el-tabs type="border-card" tab-position="left">
+                        <el-tab-pane label="最受欢迎谱面">
+                            <el-table :data='searchres["likechartcount"]' style="text-align: center;" stripe>
+                                <el-table-column prop="0" label="排名" width="100" align="center"></el-table-column>
+                                <el-table-column prop="1" label="ID" align="center" width="100"></el-table-column>
+                                <el-table-column prop="3" label="曲名" align="center"></el-table-column>
+                                <el-table-column prop="4" label="艺术家" align="center"></el-table-column>
+                                <el-table-column prop="5" label="赞" width="80" align="center"></el-table-column>
+                            </el-table>
+                        </el-tab-pane>
+                        <el-tab-pane label="最新谱面">
+                            <el-table :data='searchres["lastupdatechart"]' style="text-align: center;" stripe>
+                                <el-table-column prop="0" label="编号" width="100" align="center"></el-table-column>
+                                <el-table-column prop="1" label="ID" align="center" width="100"></el-table-column>
+                                <el-table-column prop="3" label="曲名" align="center"></el-table-column>
+                                <el-table-column prop="4" label="艺术家" align="center"></el-table-column>
+                                <el-table-column prop="5" label="时间" align="center" width="200"></el-table-column>
+                            </el-table>
+                        </el-tab-pane>
+                        <el-tab-pane label="最长谱面">
+                            <el-table :data='searchres["lencount"]' style="text-align: center;" stripe>
+                                <el-table-column prop="0" label="排名" width="100" align="center"></el-table-column>
+                                <el-table-column prop="1" label="ID" align="center" width="100"></el-table-column>
+                                <el-table-column prop="3" label="曲名" align="center"></el-table-column>
+                                <el-table-column prop="4" label="艺术家" align="center"></el-table-column>
+                                <el-table-column label="时长" width="80" align="center">
+                                    <template slot-scope="scope">
+                                        <span
+                                            v-if="(scope.row[5]-60*Math.floor(scope.row[5]/60)).toFixed(0) >= 10">{{Math.floor(scope.row[5]/60)}}:{{(scope.row[5]-60*Math.floor(scope.row[5]/60)).toFixed(0)}}</span>
+                                        <span
+                                            v-else>{{Math.floor(scope.row[5]/60)}}:0{{(scope.row[5]-60*Math.floor(scope.row[5]/60)).toFixed(0)}}</span>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </el-tab-pane>
+                        <el-tab-pane label="密度最大谱面">
+                            <el-table :data='searchres["npscount"]' style="text-align: center;" stripe>
+                                <el-table-column prop="0" label="排名" width="100" align="center"></el-table-column>
+                                <el-table-column prop="1" label="ID" align="center" width="100"></el-table-column>
+                                <el-table-column prop="3" label="曲名" align="center"></el-table-column>
+                                <el-table-column prop="4" label="艺术家" align="center"></el-table-column>
+                                <el-table-column prop="5" label="NPS" width="80" align="center"></el-table-column>
+                            </el-table>
+                        </el-tab-pane>
+                        <el-tab-pane label="物量最多谱面">
+                            <el-table :data='searchres["notecount"]' style="text-align: center;" stripe>
+                                <el-table-column prop="0" label="排名" width="100" align="center"></el-table-column>
+                                <el-table-column prop="1" label="ID" align="center" width="100"></el-table-column>
+                                <el-table-column prop="3" label="曲名" align="center"></el-table-column>
+                                <el-table-column prop="4" label="艺术家" align="center"></el-table-column>
+                                <el-table-column prop="5" label="物量" width="80" align="center"></el-table-column>
+                            </el-table>
+                        </el-tab-pane>
+                    </el-tabs>
+                </el-row>
+            </div>
+        </el-tab-pane>
+    </el-tabs-->
+</div>
