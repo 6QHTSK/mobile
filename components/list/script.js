@@ -6,7 +6,7 @@ module.exports={
                 {title:'曲名',name:'songname'},
                 {title:'难度',width:70,name:'maxdiff'}
             ],
-            flitersong : getsonglist()
+            flitersong : getsonglist().sort(function(a,b){return b.id-a.id})
         }
     },
     components:{
