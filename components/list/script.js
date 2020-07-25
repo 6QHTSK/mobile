@@ -1,10 +1,14 @@
 module.exports={
     data:function(){
         return {
+            sort: {
+                name: 'id',
+                order: 'desc'
+              },
             column : [
-                {title:'ID',width:90,name:'id'},
+                {title:'ID',width:90,name:'id', sortable: true},
                 {title:'曲名',name:'songname'},
-                {title:'难度',width:70,name:'maxdiff'}
+                {title:'难度',width:70,name:'maxdiff', sortable: true}
             ],
             flitersong : getsonglist().sort(function(a,b){return b.id-a.id})
         }
@@ -45,6 +49,10 @@ module.exports={
             {
                 window.open(this.item.kpsrc, "_blank");
             }
+            
         },
+        handleSortChange ({name, order}) {
+            this.flitersong = this.flitersong.sort((a, b) => order === 'asc' ? a[name] - b[name] : b[name] - a[name]);
+          }
     }
 }

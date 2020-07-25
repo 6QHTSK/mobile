@@ -1,5 +1,5 @@
 <div>
-    <mu-data-table :columns="column" :data="flitersong">
+    <mu-data-table :columns="column" :data="flitersong" :sort.sync="sort" @sort-change="handleSortChange">
         <template slot-scope="scope">
             <td>{{scope.row.id}}</td>
             <td>
