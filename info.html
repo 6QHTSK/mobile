@@ -32,7 +32,7 @@
       <mu-container>
         <mu-bottom-nav :value="4" @change="changed">
           <mu-bottom-nav-item title="主页" icon="home" :value="0"></mu-bottom-nav-item>
-          <!--mu-bottom-nav-item title="谱面推荐" icon="grade" :value="1"></mu-bottom-nav-item-->
+          <mu-bottom-nav-item title="谱面推荐" icon="grade" :value="1"></mu-bottom-nav-item>
           <mu-bottom-nav-item title="谱面分析" icon="assignment" :value="2" herf="./diffanalysis.html"></mu-bottom-nav-item>
           <mu-bottom-nav-item title="BD分析" icon="find_in_page" :value="3"></mu-bottom-nav-item>
           <mu-bottom-nav-item title="关于" icon="info" :value="4" herf="./info.html"></mu-bottom-nav-item>
@@ -52,12 +52,15 @@
     components: {
       //'kirapack': 'url:.\\components\\kirapack\\kirapack.vue',
       'indexpage': httpVueLoader('.\\components\\index\\index.vue'),
-      'diffanalysis': httpVueLoader('.\\components\\diffanalysis\\diffanalysis.vue')
+      //'diffanalysis': httpVueLoader('.\\components\\diffanalysis\\diffanalysis.vue')
     },
     methods: {
       changed(e){
         if(e==0){
           window.open('./index.html',"_self")
+        }
+        if(e==1){
+          window.open('./kirapack.html',"_self")
         }
         if(e==2){
           window.open('./diffanalysis.html',"_self")

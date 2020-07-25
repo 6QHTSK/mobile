@@ -17,6 +17,7 @@
   <script src="https://cdn.jsdelivr.net/npm/muse-ui-toast@0.3.0/dist/muse-ui-toast.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/muse-ui-loading@0.2.0/dist/muse-ui-loading.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/muse-ui-progress@0.1.0/dist/muse-ui-progress.min.js"></script>
+  <script src="http://coppercomplex.gitee.io/kirapacks-page/songlist.js"></script>
 </head>
 
 <body>
@@ -27,13 +28,14 @@
       </mu-appbar>
     </div>
     <indexpage style="padding-bottom: 60px;padding-top:60px"></indexpage>
+    <!--list style="padding-bottom: 60px;padding-top:60px"></list-->
     <!--diffanalysis style="padding-bottom: 60px;padding-top:60px"></diffanalysis-->
     <!--bestdoriany style="padding-bottom: 60px;padding-top:60px"></bestdoriany-->
     <div id="nav">
       <mu-container>
         <mu-bottom-nav :value="0" @change="changed">
           <mu-bottom-nav-item title="主页" icon="home" :value="0"></mu-bottom-nav-item>
-          <!--mu-bottom-nav-item title="谱面推荐" icon="grade" :value="1"></mu-bottom-nav-item-->
+          <mu-bottom-nav-item title="谱面推荐" icon="grade" :value="1"></mu-bottom-nav-item>
           <mu-bottom-nav-item title="谱面分析" icon="assignment" :value="2"></mu-bottom-nav-item>
           <mu-bottom-nav-item title="BD分析" icon="find_in_page" :value="3"></mu-bottom-nav-item>
           <mu-bottom-nav-item title="关于" icon="info" :value="4"></mu-bottom-nav-item>
@@ -52,13 +54,17 @@
     components: {
       //'kirapack': 'url:.\\components\\kirapack\\kirapack.vue',
       'indexpage': httpVueLoader('.\\components\\index\\index.vue'),
-      'diffanalysis': httpVueLoader('.\\components\\diffanalysis\\diffanalysis.vue'),
-      'bestdoriany':httpVueLoader('.\\components\\bestdoriany\\bestdoriany.vue')
+      //'diffanalysis': httpVueLoader('.\\components\\diffanalysis\\diffanalysis.vue'),
+      //'bestdoriany':httpVueLoader('.\\components\\bestdoriany\\bestdoriany.vue'),
+      //'list':httpVueLoader('.\\components\\list\\list.vue')
     },
     methods: {
       changed(e){
         if(e==0){
           window.open('./index.html',"_self")
+        }
+        if(e==1){
+          window.open('./kirapack.html',"_self")
         }
         if(e==2){
           window.open('./diffanalysis.html',"_self")
