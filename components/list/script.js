@@ -18,7 +18,7 @@ module.exports={
     },
     methods:{
         imgsrc(e){
-            return 'https://test-1300838857.cos.ap-singapore.myqcloud.com/WEBP/'+e+'.webp'
+            return 'https://assets-1300838857.cos.ap-nanjing.myqcloud.com/pic/'+e+'.jpg/webp'
         },
         openbdlink(e) {
             if(e.newid==undefined)
@@ -41,15 +41,7 @@ module.exports={
             }
         },
         openkirapack(e) {
-            if(e.kpsrc==undefined)
-            {
-                window.open('http://coppercomplex.gitee.io/kirapack-store/' + e.id + '.kirapack', "_blank");
-            }
-            else
-            {
-                window.open(this.item.kpsrc, "_blank");
-            }
-            
+                window.open('https://assets-1300838857.cos.ap-nanjing.myqcloud.com/kirapack/' + e.id + '.kirapack', "_blank");
         },
         handleSortChange ({name, order}) {
             this.flitersong = this.flitersong.sort((a, b) => order === 'asc' ? a[name] - b[name] : b[name] - a[name]);
