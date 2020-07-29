@@ -10,11 +10,15 @@ module.exports={
                 {title:'曲名',name:'songname'},
                 {title:'难度',width:70,name:'maxdiff', sortable: true}
             ],
-            flitersong : getsonglist().sort(function(a,b){return b.id-a.id})
+            flitersong : [],
+            view : false
         }
     },
     components:{
         'listitem' : httpVueLoader('.\\components\\listitem\\listitem.vue')
+    },
+    mounted(){
+        this.getsonglist()
     },
     methods:{
         imgsrc(e){
@@ -45,6 +49,19 @@ module.exports={
         },
         handleSortChange ({name, order}) {
             this.flitersong = this.flitersong.sort((a, b) => order === 'asc' ? a[name] - b[name] : b[name] - a[name]);
-          }
+        },
+        getsonglist(){
+            vm = this
+            axios.get('https://testapi.ayachan.fun:11496/songlist').then(function (res) {
+                vm.view = true;
+                if (res.status == 200) {
+                    vm.flitersong = res.data.sort(function(a,b){return b.id-a.id})
+                    console.log(res.data)
+                }
+                else {
+                    vm.$toast.error("拉取资源失败")
+                }
+            })
+        }
     }
 }
