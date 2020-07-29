@@ -105,14 +105,14 @@ module.exports = {
                 }
             }
             if (flag) {
-                url = "http://106.55.249.77/diffanalysis?id="+this.bestdoriid
+                url = "https://testapi.ayachan.fun:11496/diffanalysis?id="+this.bestdoriid
                 if(this.bestdoriid<500){
                     url = url + "&diff=" + this.diffid
                 }
                 axios.get(url).then(res=>{procession(res)})
             }
             else{
-                url = "http://106.55.249.77/diffanalysis"
+                url = "https://testapi.ayachan.fun:11496/diffanalysis"
                 data = {"diff":this.diffid,"data":JSON.parse(this.inputstr)}
                 axios.post(url,data).then(res=>{procession(res)})
             }
@@ -146,7 +146,7 @@ module.exports = {
                 url = "https://bird.ioliu.cn/v1?url=https://player.banground.fun/api/bestdori/community/" + this.bestdoriid;
             }
             else {
-                url = "http://106.55.249.77/bdofftobdfan?id=" + this.bestdoriid + "&diff=" + diffstr[this.diffid]
+                url = "https://testapi.ayachan.fun:11496/bdofftobdfan?id=" + this.bestdoriid + "&diff=" + diffstr[this.diffid]
             }
             flag = false;
             vm = this;
