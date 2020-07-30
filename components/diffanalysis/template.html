@@ -188,6 +188,20 @@
                     </mu-chip>
                 </mu-flex>
             </mu-list-item>
+
+            <mu-list-item v-if="newdiffcalc!=null">
+                <mu-flex justify-content="start" fill>
+                    <span style="margin-left:8px;font-size:small;">
+                        白蓝物量节拍公式 by 金坷垃jin
+                    </span>
+                </mu-flex>
+                <mu-flex justify-content="end" fill>
+                    <mu-chip :color="returncolor(calcpercentage(newdiffcalc))">
+                        <span style="font-size: small;"> LV: </span>
+                        <span style="font-size: small;">{{newdiffcalc}}</span>
+                    </mu-chip>
+                </mu-flex>
+            </mu-list-item>
         </mu-list>
         <p> </p>
     </div>
